@@ -20,4 +20,6 @@ class LlistaProductes(models.Model):
     carreto = models.ForeignKey(Carreto, on_delete=models.CASCADE)
     producte = models.ForeignKey(Producte, on_delete=models.CASCADE)
     quantitat = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
+    update_at = models.DateTimeField(auto_now=True)
 
