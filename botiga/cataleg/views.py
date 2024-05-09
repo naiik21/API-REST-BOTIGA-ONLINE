@@ -25,4 +25,19 @@ def nouProducte(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
+@api_view(['GET', 'PUT'])
+def editaProducte(request, pk):
+    try:
+        producte = Producte.objects.get(id=pk)
+    except Producte.DoesNotExist:
+        return Response(status=404)
+    if request.method == 'GET':
+        serializer=ProducteSerializer(producte)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer= ProducteSerializer(producte, data=request,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+    return Response(serializer.errors, status=400)
     
