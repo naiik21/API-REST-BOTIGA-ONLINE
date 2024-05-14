@@ -43,14 +43,26 @@ def editaProducte(request, pk):
         return Response(serializer.data)
     return Response(serializer.errors, status=400)
 
+@api_view(['PUT'])
+def editaStockProducte(request, pk):
+    try:
+        producte = Producte.objects.get(id=pk)
+        if producte.estaActiu == False:
+            return Response({"Error":"No existe el producto"}, status=400)
+    except Producte.DoesNotExist:
+        return Response(status=404)
+    # Obtener la instancia de las unidades del producto
+    unitats_instance = producte.unitats
+    
+    # Serializar y actualizar solo las unidades
+    serializer = ProducteSerializer(producte, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()  
+        return Response(serializer.data)
+    return Response(serializer.errors, status=400)
+
 @api_view(['DELETE'])
 def eliminaProducte(request, pk):
-    # producte = Producte.objects.get(id=pk) 
-    # serializer= ProducteSerializer(producte, data=request.data ,partial=True)
-    # if serializer.is_valid():
-    #     producte.delete()
-    #     return Response(serializer.data, status=201)
-    # return Response(serializer.errors, status=400)
     try:
         producte = Producte.objects.get(id=pk)
         if producte.estaActiu == False:
