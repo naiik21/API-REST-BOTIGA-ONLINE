@@ -17,8 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from cataleg import views
+from carreto import views
+from comandes import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('productes/', include("cataleg.urls")),
+    path('carreto/', include("carreto.urls")),
+    path('comandes/', include("comandes.urls")),
 ]
