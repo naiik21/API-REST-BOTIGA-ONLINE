@@ -2,13 +2,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import OrdreSerializer
 from .models import Ordre 
-from clients.serializer import ClientSerializer
 from clients.models import Client 
 from carreto.models import Carreto 
-from carreto.serializer import CarretoSerializer
 
 
-# Create your views here.
 # Create your views here.
 @api_view(['GET'])
 def historial(request):
