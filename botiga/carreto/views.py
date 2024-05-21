@@ -6,8 +6,8 @@ from .serializer import CarretoSerializer
 from cataleg.models import LlistaProductes
 from cataleg.serializer import LlistaProductesSerializer
 from cataleg.serializer import LlistaProductesProducteSerializer
-from cataleg.models import Producte
-from cataleg.serializer import ProducteSerializer
+from comandes.models import Ordre
+from comandes.serializer import OrdreSerializer
 from django.shortcuts import get_object_or_404
 
 
@@ -91,6 +91,15 @@ def comprar(request, pk):
     serializer= CarretoSerializer(carreto, data=request.data ,partial=True)
     if serializer.is_valid():
         carreto.estaActiu = False
-        serializer.save()  
-        return Response(serializer.data)
+        carreto.save()
+        ordre_data = {
+            "carreto": carreto.id,
+        }
+        order = OrdreSerializer(data=ordre_data)
+        if order.is_valid():
+            order.save()
+            serializer.save() 
+            return Response(serializer.data)
+        else:
+            return Response(order.errors, status=400)
     return Response(serializer.errors, status=400)
